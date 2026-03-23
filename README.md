@@ -1,57 +1,103 @@
-# Sample Hardhat 3 Beta Project (`node:test` and `viem`)
+# Solidity Hardhat Project
 
-This project showcases a Hardhat 3 Beta project using the native Node.js test runner (`node:test`) and the `viem` library for Ethereum interactions.
+This repository is a sample Hardhat 3 project setup for Ethereum smart contract development.
 
-To learn more about the Hardhat 3 Beta, please visit the [Getting Started guide](https://hardhat.org/docs/getting-started#getting-started-with-hardhat-3). To share your feedback, join our [Hardhat 3 Beta](https://hardhat.org/hardhat3-beta-telegram-group) Telegram group or [open an issue](https://github.com/NomicFoundation/hardhat/issues/new) in our GitHub issue tracker.
+- Hardhat config: `hardhat.config.ts`
+- Solidity contracts: `contracts/Counter.sol`
+- Solidity tests: `contracts/Counter.t.sol`
+- TypeScript tests: `test/Counter.ts`
+- Ignition deployment module: `ignition/modules/Counter.ts`
+- Example script: `scripts/send-op-tx.ts`
 
-## Project Overview
+## Prerequisites
 
-This example project includes:
+- Node.js LTS (22.x recommended). Hardhat does not support Node 25+ unstable releases.
+- npm or pnpm (npm is used in this project by default).
 
-- A simple Hardhat configuration file.
-- Foundry-compatible Solidity unit tests.
-- TypeScript integration tests using [`node:test`](nodejs.org/api/test.html), the new Node.js native test runner, and [`viem`](https://viem.sh/).
-- Examples demonstrating how to connect to different types of networks, including locally simulating OP mainnet.
+Verify your version:
 
-## Usage
+```bash
+node --version
+```
 
-### Running Tests
+## Install dependencies
 
-To run all the tests in the project, execute the following command:
+```bash
+npm install
+```
 
-```shell
+## Recommended .gitignore
+
+This repository includes a ready-to-use `.gitignore` for Node/Hardhat artifacts.
+
+## Common Hardhat commands
+
+Compile:
+
+```bash
+npx hardhat compile
+```
+
+Run all tests:
+
+```bash
 npx hardhat test
 ```
 
-You can also selectively run the Solidity or `node:test` tests:
+Run only Solidity tests:
 
-```shell
+```bash
 npx hardhat test solidity
+```
+
+Run Node.js runner tests:
+
+```bash
 npx hardhat test nodejs
 ```
 
-### Make a deployment to Sepolia
+Run a Hardhat console:
 
-This project includes an example Ignition module to deploy the contract. You can deploy this module to a locally simulated chain or to Sepolia.
+```bash
+npx hardhat console
+```
 
-To run the deployment to a local chain:
+## Ignition deployment
 
-```shell
+Local EDR-simulated deployment:
+
+```bash
 npx hardhat ignition deploy ignition/modules/Counter.ts
 ```
 
-To run the deployment to Sepolia, you need an account with funds to send the transaction. The provided Hardhat configuration includes a Configuration Variable called `SEPOLIA_PRIVATE_KEY`, which you can use to set the private key of the account you want to use.
+Sepolia deployment:
 
-You can set the `SEPOLIA_PRIVATE_KEY` variable using the `hardhat-keystore` plugin or by setting it as an environment variable.
+1. Set network vars (via config variable or CLI):
 
-To set the `SEPOLIA_PRIVATE_KEY` config variable using `hardhat-keystore`:
-
-```shell
+```bash
+# set secret in keystore
 npx hardhat keystore set SEPOLIA_PRIVATE_KEY
+# set RPC URL in environment or keystore
+export SEPOLIA_RPC_URL="https://sepolia.infura.io/v3/<YOUR_KEY>"
 ```
 
-After setting the variable, you can run the deployment with the Sepolia network:
+2. Deploy:
 
-```shell
+```bash
 npx hardhat ignition deploy --network sepolia ignition/modules/Counter.ts
 ```
+
+## Network config in this project
+
+`hardhat.config.ts` has:
+
+- `hardhatMainnet` (edr-simulated, l1)
+- `hardhatOp` (edr-simulated, op)
+- `sepolia` (http, l1)
+
+## Notes
+
+- Run `npx hardhat --help` for all available tasks.
+- If you see `Error HHE3: No Hardhat config file found`, ensure you are in the repo root and that `hardhat.config.ts` exists.
+- Use Node 22 LTS to avoid hardhat compatibility warnings.
+
